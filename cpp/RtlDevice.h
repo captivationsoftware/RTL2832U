@@ -117,7 +117,8 @@ class RtlDevice
 
         // sets AGC mode of RTL2832U chip
         void setAgcMode(bool enable);
-
+        // sets bias-tee mode on RTL v3+
+        void setBiasMode(bool enable);
         // sets gain mode (auto or manual) of the tuner chip
         void setGainMode(bool enable);
         // sets gain value of the tuner chip. Requires that gain mode be set to manual.

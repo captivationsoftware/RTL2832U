@@ -44,6 +44,8 @@ class RTL2832U_base : public frontend::FrontendScanningTunerDevice<frontend_tune
         bool digital_agc_enable;
         /// Property: frequency_correction
         short frequency_correction;
+        /// Property: bias_enable
+        bool bias_enable;
         /// Property: target_device
         target_device_struct target_device;
         /// Property: current_device

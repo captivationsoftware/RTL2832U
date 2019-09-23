@@ -153,6 +153,15 @@ void RTL2832U_base::loadProperties()
                 "ppm",
                 "external",
                 "property");
+    
+    addProperty(bias_enable,
+                false,
+                "bias_enable",
+                "bias_enable",
+                "readwrite",
+                "",
+                "external",
+                "property");
 
     frontend_listener_allocation = frontend::frontend_listener_allocation_struct();
     frontend_tuner_allocation = frontend::frontend_tuner_allocation_struct();

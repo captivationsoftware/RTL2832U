@@ -296,6 +296,26 @@ void RtlDevice::setAgcMode(bool enable)
     }
 }
 
+/* Attempt to set the RTL2832 bias mode.
+ */
+void RtlDevice::setBiasMode(bool enable)
+{
+    LOG_TRACE(RtlDevice, __PRETTY_FUNCTION__);
+
+    if (m_device) {
+        // For error checking
+        int r;
+
+        if ((r = rtlsdr_set_bias_tee(m_device, (int) enable)) != 0) {
+            LOG_WARN(RtlDevice, "Unable to set RTL2832 bias mode to " << (enable ? "enabled" : "disabled") << " with error " << r);
+        } else {
+            LOG_INFO(RtlDevice, "RTL2832 bias mode set to " << (enable ? "enabled" : "disabled"));
+        }
+    } else {
+        LOG_WARN(RtlDevice, "Unable to set RTL2832 bias mode: Could not open RTL device "<<m_channelNumber);
+    }
+}
+
 /* Attempt to set the tuner gain mode.
  */
 void RtlDevice::setGainMode(bool automatic)

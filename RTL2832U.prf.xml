@@ -228,6 +228,12 @@ False: Does not need control and can just attach to any currently tasked device 
     <kind kindtype="property"/>
     <action type="external"/>
   </simple>
+  <simple id="bias_enable" mode="readwrite" name="bias_enable" type="boolean">
+    <description>Since RTL v3, a bias tee is included to drive 3.3V out the antenna port to power active LNAs/antennas.</description>
+    <value>False</value>
+    <kind kindtype="property"/>
+    <action type="external"/>
+  </simple>
   <struct id="FRONTEND::scanner_allocation" mode="writeonly" name="frontend_scanner_allocation">
     <description>Frontend Interfaces scanner allocation structure</description>
     <simple id="FRONTEND::scanner_allocation::min_freq" name="min_freq" type="double"/>

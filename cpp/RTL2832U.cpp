@@ -326,6 +326,7 @@ void RTL2832U_i::construct()
     // set some default values that should get overwritten by correct values
     group_id = "RTL_GROUP_ID_NOT_SET";
     digital_agc_enable = false;
+    bias_enable = false;
 
     //target_device.index = -1;
 
@@ -344,7 +345,7 @@ void RTL2832U_i::construct()
     addPropertyChangeListener("digital_agc_enable", this, &RTL2832U_i::rtl2832uAgcEnableChanged);
     addPropertyChangeListener("update_available_devices", this, &RTL2832U_i::updateAvailableDevicesChanged);
     addPropertyChangeListener("frequency_correction", this, &RTL2832U_i::frequencyCorrectionChanged);
-
+    addPropertyChangeListener("bias_enable", this, &RTL2832U_i::biasEnableChanged);
 
      LOG_INFO(RTL2832U_i, "Target Device Index " << target_device.index)
     { // scope for prop_lock
@@ -1108,6 +1109,14 @@ void RTL2832U_i::frequencyCorrectionChanged(const short* old_value, const short*
     }
 }
 
+/* acquires the rtl_tuner.lock */
+void RTL2832U_i::biasEnableChanged(const bool* old_value, const bool* new_value){
+    LOG_TRACE(RTL2832U_i,__PRETTY_FUNCTION__);
+    if(rtl_device_ptr != NULL)
+        scoped_tuner_lock tuner_lock(rtl_tuner.lock);
+        rtl_device_ptr->setBiasMode(*new_value);
+}
+
 /*************************************************************
 Helper functions
 *************************************************************/
@@ -1257,6 +1266,9 @@ void RTL2832U_i::initRtl() throw (CF::PropertySet::InvalidConfiguration) {
 
         // set RTL2832 AGC mode according to property value
         rtl_device_ptr->setAgcMode(digital_agc_enable);
+        
+        // set bias mode according to property value
+        rtl_device_ptr->setBiasMode(bias_enable);
 
         // start with tuner gain mode set to auto
         rtl_device_ptr->setGainMode(true);
