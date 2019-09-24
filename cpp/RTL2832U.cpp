@@ -306,14 +306,6 @@ int RTL2832U_i::serviceFunction()
     return NOOP;
 }
 
-/* acquires the prop_lock and the rtl_tuner.lock */
-//void RTL2832U_i::initialize() throw (CF::LifeCycle::InitializeError, CORBA::SystemException)
-//{
-//    RTL2832U_base::initialize();
-//
-//
-//}
-
 void RTL2832U_i::construct()
 {
     /***********************************************************************************
@@ -340,14 +332,23 @@ void RTL2832U_i::construct()
      this function is invoked in the constructor
     ***********************************************************************************/
 
-    addPropertyChangeListener("target_device", this, &RTL2832U_i::targetDeviceChanged);
-    addPropertyChangeListener("group_id", this, &RTL2832U_i::groupIdChanged);
-    addPropertyChangeListener("digital_agc_enable", this, &RTL2832U_i::rtl2832uAgcEnableChanged);
-    addPropertyChangeListener("update_available_devices", this, &RTL2832U_i::updateAvailableDevicesChanged);
-    addPropertyChangeListener("frequency_correction", this, &RTL2832U_i::frequencyCorrectionChanged);
-    addPropertyChangeListener("bias_enable", this, &RTL2832U_i::biasEnableChanged);
+    addPropertyListener(target_device, this, &RTL2832U_i::targetDeviceChanged);
+    addPropertyListener(group_id, this, &RTL2832U_i::groupIdChanged);
+    addPropertyListener(digital_agc_enable, this, &RTL2832U_i::rtl2832uAgcEnableChanged);
+    addPropertyListener(update_available_devices, this, &RTL2832U_i::updateAvailableDevicesChanged);
+    addPropertyListener(frequency_correction, this, &RTL2832U_i::frequencyCorrectionChanged);
+    addPropertyListener(bias_enable, this, &RTL2832U_i::biasEnableChanged);
+}
 
-     LOG_INFO(RTL2832U_i, "Target Device Index " << target_device.index)
+/* Developer Note: Property overrides from DCD are applied AFTER the constructor and do not trigger
+ * property change listeners(?).  In order for property overrides from DCD to be properly applied, 
+ * initialize the rtl device inside the 'initialize' method. */
+/* acquires the prop_lock and the rtl_tuner.lock */
+void RTL2832U_i::initialize() throw (CF::LifeCycle::InitializeError, CORBA::SystemException)
+{
+    RTL2832U_base::initialize();
+    
+    LOG_INFO(RTL2832U_i, "Target Device Index " << target_device.index)
     { // scope for prop_lock
         exclusive_lock lock(prop_lock);
 
@@ -1175,7 +1176,7 @@ void RTL2832U_i::initRtl() throw (CF::PropertySet::InvalidConfiguration) {
         current_device.vendor.clear();
         current_device.serial.clear();
         rtl_tuner.reset();
-        digital_agc_enable = false;
+        //digital_agc_enable = false;
 
         // update available devices
         updateAvailableDevices();

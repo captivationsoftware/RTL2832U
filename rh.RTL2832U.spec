@@ -32,7 +32,7 @@ Prefix:         %{_prefix}
 
 Name:           rh.RTL2832U
 Version:        2.1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Device %{name}
 
 Group:          REDHAWK/Devices
@@ -49,9 +49,8 @@ Requires:       frontendInterfaces >= 2.3 bulkioInterfaces >= 2.1
 
 # RTL requirements
 BuildRequires:  libusb1-devel >= 1.0.0
-BuildRequires:  librtlsdr >= 0.5.2
-Requires:       librtlsdr >= 0.5.2
-
+BuildRequires:  rtl-sdr-devel >= 0.5.3
+Requires:       rtl-sdr >= 0.5.3
 Obsoletes:      RTL2832U < 2.0.0
 
 

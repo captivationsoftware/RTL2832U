@@ -17,3 +17,4 @@ missing
 *.pyc
 .md5sums
 RTL2832U
+*.swp

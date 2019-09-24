@@ -300,6 +300,7 @@ void RtlDevice::setAgcMode(bool enable)
  */
 void RtlDevice::setBiasMode(bool enable)
 {
+#ifdef HAS_RTLSDR_BIASTEE
     LOG_TRACE(RtlDevice, __PRETTY_FUNCTION__);
 
     if (m_device) {
@@ -314,6 +315,9 @@ void RtlDevice::setBiasMode(bool enable)
     } else {
         LOG_WARN(RtlDevice, "Unable to set RTL2832 bias mode: Could not open RTL device "<<m_channelNumber);
     }
+#else
+        LOG_WARN(RtlDevice, "Unable to set RTL2832 bias mode: Device compiled with librtlsdr that does not include this function!"); 
+#endif
 }
 
 /* Attempt to set the tuner gain mode.

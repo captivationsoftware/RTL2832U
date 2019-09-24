@@ -147,7 +147,7 @@ class RTL2832U_i : public RTL2832U_base
         int serviceFunction();
 
         /* acquires the prop_lock and the rtl_tuner.lock */
-       // void initialize() throw (CF::LifeCycle::InitializeError, CORBA::SystemException);
+        void initialize() throw (CF::LifeCycle::InitializeError, CORBA::SystemException);
 
     protected:
 
@@ -285,6 +285,9 @@ class RTL2832U_i : public RTL2832U_base
 
         /* acquires the prop_lock and the rtl_tuner.lock */
         void frequencyCorrectionChanged(const short* old_value, const short* new_value);
+        
+        /* acquires the rtl_tuner.lock */
+        void biasEnableChanged(const bool* old_value, const bool* new_value);
 
         //
         // helper functions
